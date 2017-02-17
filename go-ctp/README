@@ -3,5 +3,9 @@
 编译example命令：make example
 即可运行样例程序
 
-
-
+ps: 
+1、报单插入，预埋单插入等函数为了调试方便将需要填写的报单信息直接放到流函数内部，实际使用时应以结构体形式作为参数传
+2、由于CTP内部字符串以数组形式存储，在撤单、撤单预埋单、移除预埋单、移除预埋撤单等函数中需要用到的字符串如OrderSysID、OrderRef、ParkedOrderID、ParkedOrderActionID等等都是以“           1”、“       55555”等形式存储，不能以“1”、“55555”代替，因此
+强烈建议在使用以上函数时，参数要通过GetOrderSysID()等函数获取。（或者修改函数，直接将结构体作为参数传入）
+3、在撤单与撤单预埋单函数中，代码中选择了ExchangeID+OrderSysID的组合来撤单，在使用FrontID+SessionID+OrderRef组合进行撤单时报了无权限的错误（还在寻找原因）
+使用FrontID+SessionID+OrderRef组合在报单发出后随时可以进行撤单，而ExchangeID+OrderSysID的组合只有在报单发送到交易所，生成OrderSysID后才能撤单
